@@ -1,0 +1,43 @@
+service: appointment-cl
+frameworkVersion: '4'
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: us-east-1
+  deploymentBucket:
+    name: elasticbeanstalk-us-east-1-850576544278
+  environment:
+    DB_HOST: ${env:DB_HOST}
+    DB_USER: ${env:DB_USER}
+    DB_PASSWORD: ${env:DB_PASSWORD}
+    DB_NAME: ${env:DB_NAME}
+    DB_PORT: ${env:DB_PORT}
+    EVENT_BUS_NAME: ${env:EVENT_BUS_NAME}
+    TARGET_SQS_URL: ${env:TARGET_SQS_URL}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - ec2:CreateNetworkInterface
+            - ec2:DescribeNetworkInterfaces
+            - ec2:DeleteNetworkInterface
+            - sqs:ReceiveMessage
+            - sqs:DeleteMessage
+            - sqs:GetQueueAttributes
+            - logs:CreateLogGroup
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+            - sns:Publish
+            - events:PutEvents
+            - sqs:SendMessage
+          Resource: "*"
+
+functions:
+  processSqsMessage:
+    handler: src/index.handler
+    timeout: 30
+
+plugins:
+  - serverless-offline

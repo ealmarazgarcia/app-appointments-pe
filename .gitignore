@@ -1,0 +1,28 @@
+# Node
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# TypeScript
+*.tsbuildinfo
+dist/
+build/
+
+# Serverless
+.serverless/
+
+# Env
+.env
+
+# IDEs
+.vscode/
+.idea/
+.DS_Store
+
+# Misc
+coverage/ 
